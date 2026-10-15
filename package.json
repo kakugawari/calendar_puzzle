@@ -1,0 +1,13 @@
+{
+  "name": "calendar-puzzle",
+  "version": "1.0.0",
+  "description": "ハロウィンのカレンダーパズル (ビルドなしで動く)。日付のマスを 1 つ空けて、8 枚のピースで盤をうめる",
+  "private": true,
+  "scripts": {
+    "start": "node serve.js",
+    "test": "node --test *.test.js",
+    "test:ui": "node browser-test.js",
+    "pack": "node pack.js"
+  },
+  "license": "MIT"
+}

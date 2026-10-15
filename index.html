@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ハロウィン カレンダーパズル</title>
+<meta name="description" content="日付のマスを 1 つだけ空けて、8 枚のピースで盤をうめるパズル">
+<meta name="theme-color" content="#140b26">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<div id="app">
+  <header id="topbar">
+    <h1 class="title">ハロウィン カレンダーパズル</h1>
+    <div class="solved" id="solvedCount" aria-label="解いた日数">🎃 0/31</div>
+  </header>
+
+  <nav id="datebar" aria-label="日付">
+    <button type="button" class="step" id="btnPrev" aria-label="前の日">◀</button>
+    <button type="button" class="datebtn" id="btnDate" aria-haspopup="dialog">
+      <span class="month">10月</span><span class="day" id="dayLabel">1</span><span class="unit">日</span><span class="caret">▾</span>
+    </button>
+    <button type="button" class="step" id="btnNext" aria-label="次の日">▶</button>
+  </nav>
+
+  <main id="stage">
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="パズルの盤"></svg>
+  </main>
+
+  <footer id="toolbar">
+    <div class="tools" id="tools">
+      <button type="button" class="tool" id="btnRotate"><span class="ico">⟳</span><span class="lbl">回す</span></button>
+      <button type="button" class="tool" id="btnFlip"><span class="ico">⇋</span><span class="lbl">裏返す</span></button>
+      <button type="button" class="tool" id="btnHint"><span class="ico">💡</span><span class="lbl" id="hintLabel">ヒント</span></button>
+      <button type="button" class="tool" id="btnReset"><span class="ico">↺</span><span class="lbl">やり直す</span></button>
+    </div>
+    <div class="win" id="win" hidden>
+      <div class="win-text"><div id="winText">🎃 クリア！</div><small id="winSub"></small></div>
+      <div class="win-actions">
+        <button type="button" class="tool primary" id="btnNextDay">つぎの日へ</button>
+        <button type="button" class="tool" id="btnWinClose">とじる</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div id="picker" class="picker" hidden>
+  <div class="picker-card" role="dialog" aria-label="日付をえらぶ">
+    <div class="picker-head">
+      <span>10月 — 日付をえらぶ</span>
+      <button type="button" class="close" id="btnPickerClose" aria-label="とじる">✕</button>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="picker-foot">
+      <button type="button" class="tool" id="btnToday">きょうにする</button>
+      <span class="legend">🎃 = 解いた日</span>
+    </div>
+  </div>
+</div>
+
+<script src="./core.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
