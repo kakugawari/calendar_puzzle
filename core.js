@@ -39,9 +39,9 @@
     '3,4': 24, '4,4': 18,
     '3,5': 14, '4,5': 8
   };
-  /** 写真で字をはっきり読めた日。7 日 (5,2) だけは字が欠けた写真で、ほかの日の消去で決めた。 */
+  /** 写真で字と位置を確かめた日 (7 日も、使う人が「7」と教えてくれた写真で位置まで確かめた)。 */
   const CONFIRMED = {};
-  Object.keys(DATE_AT).forEach(function (k) { if (k !== '5,2') CONFIRMED[k] = true; });
+  Object.keys(DATE_AT).forEach(function (k) { CONFIRMED[k] = true; });
 
   const key = function (c, r) { return c + ',' + r; };
   const CELL_OF_DATE = {};

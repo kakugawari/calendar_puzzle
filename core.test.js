@@ -27,14 +27,14 @@ test('盤は 31 マスで、日付 1〜31 がひとつずつ入っている', ()
 });
 
 test('写真で読んだ日付の位置が入っている', () => {
-  // 日 -> [列, 行]。7 日だけは字が欠けた写真で、消去して決めた
+  // 日 -> [列, 行]
   const seen = { 2: [1, 2], 20: [2, 1], 31: [6, 3], 3: [5, 0], 1: [5, 3], 23: [3, 1], 14: [3, 5], 13: [7, 0],
     10: [4, 0], 16: [1, 0], 28: [2, 2], 21: [4, 3], 29: [4, 1], 25: [1, 1], 22: [6, 0], 12: [3, 2],
     8: [4, 5], 18: [4, 4], 15: [5, 1], 11: [0, 1], 24: [3, 4], 4: [3, 3], 5: [7, 1], 9: [2, 3], 6: [0, 0],
     17: [6, 2], 27: [3, 0], 19: [6, 1], 30: [2, 0], 26: [4, 2] };
   Object.keys(seen).forEach((d) => assert.deepStrictEqual(Core.CELL_OF_DATE[d], seen[d], `${d} 日`));
   assert.deepStrictEqual(Core.CELL_OF_DATE[7], [5, 2]);
-  assert.strictEqual(Object.keys(Core.CONFIRMED).length, 30);
+  assert.strictEqual(Object.keys(Core.CONFIRMED).length, 31);
 });
 
 test('穴の外ふちは 1 つの輪で、面積は 31 マス + 三角 3 つ', () => {
