@@ -438,8 +438,6 @@
       app.style.top = Math.round(vv ? vv.offsetTop : 0) + 'px';
       app.style.height = h + 'px';
     }
-    const r = els.stage.getBoundingClientRect();
-    document.getElementById('diag').textContent = 'v4 窓' + h + ' 枠' + Math.round(app.getBoundingClientRect().height) + ' 盤' + Math.round(r.top) + '+' + Math.round(r.height);
   }
 
   function computeMetrics() {

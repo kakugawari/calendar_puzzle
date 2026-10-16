@@ -67,8 +67,8 @@ body {
   color: var(--text);
 }
 
-.diag { margin-left: auto; font-size: 9px; color: var(--muted); opacity: .6; font-variant-numeric: tabular-nums; }
 .solved {
+  margin-left: auto;
   font-size: 13px;
   font-weight: 700;
   color: var(--muted);
