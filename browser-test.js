@@ -243,6 +243,24 @@ async function run() {
       await context.close();
     }
 
+    // ------------------------------------------------ 外枠に余白があっても、窓にぴったり合う
+    section('外枠の余白 (Artifact の外枠) に左右されない');
+    {
+      const { context, page } = await open(browser);
+      await page.addStyleTag({ content: ':root{padding:59px 0 34px} body{margin:0}' });   // 外枠が root に余白を足す形をまねる
+      await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+      await page.waitForTimeout(400);
+      const r = await page.evaluate(() => {
+        const a = document.getElementById('app').getBoundingClientRect();
+        const tb = document.getElementById('toolbar').getBoundingClientRect();
+        const bt = document.getElementById('btnReset').getBoundingClientRect();
+        return { top: a.top, bottom: a.bottom, tbBottom: tb.bottom, btnBottom: bt.bottom, vh: window.innerHeight, scroll: document.documentElement.scrollHeight - document.documentElement.clientHeight };
+      });
+      ok(Math.abs(r.top) < 1 && Math.abs(r.bottom - r.vh) < 1, `#app が窓にぴったり (上 ${r.top}, 下 ${r.bottom} / 窓 ${r.vh})`);
+      ok(r.btnBottom <= r.vh && r.tbBottom <= r.vh, `下のボタンが窓の中に全部見える (${Math.round(r.btnBottom)} <= ${r.vh})`);
+      await context.close();
+    }
+
     // ------------------------------------------------ 回す・裏返す
     section('回す・裏返す');
     {

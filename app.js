@@ -428,7 +428,22 @@
   }
 
   // ---------------------------------------------------------------- 日付・並べ直し
+  /** 見えている窓の大きさに #app を合わせる (親の高さの計算に頼ると、窓より高くなって下が切れる) */
+  function fitViewport() {
+    const vv = window.visualViewport;
+    const h = Math.round(vv ? vv.height : window.innerHeight);
+    const app = document.getElementById('app');
+    if (h >= 1) {
+      app.style.bottom = 'auto';
+      app.style.top = Math.round(vv ? vv.offsetTop : 0) + 'px';
+      app.style.height = h + 'px';
+    }
+    const r = els.stage.getBoundingClientRect();
+    document.getElementById('diag').textContent = 'v4 窓' + h + ' 枠' + Math.round(app.getBoundingClientRect().height) + ' 盤' + Math.round(r.top) + '+' + Math.round(r.height);
+  }
+
   function computeMetrics() {
+    fitViewport();
     const r = els.stage.getBoundingClientRect();
     state.W = Math.round(r.width); state.H = Math.round(r.height);
     els.svg.setAttribute('viewBox', '0 0 ' + state.W + ' ' + state.H);
@@ -629,6 +644,11 @@
         const r = els.stage.getBoundingClientRect();
         if (r.width >= 1 && r.height >= 1) layout(false);
       }, 120);
+    });
+
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { layout(false); }, 120);
     });
 
     layout(true);

@@ -30,8 +30,8 @@ if (!artifact) {
   const body = html.match(/<body>([\s\S]*)<\/body>/)[1]
     .replace('<script src="./core.js"></script>', () => `<script>\n${coreJs}\n</script>`)
     .replace('<script src="./app.js"></script>', () => `<script>\n${appJs}\n</script>`);
-  // 公開時の外枠が、安全域ぶんの余白と高さの基準を持つ。二重にならないよう、こちらの安全域は 0 にする。
-  const override = ':root { --sat: 0px; --sab: 0px; --sal: 0px; --sar: 0px; }\nhtml, body { height: 100%; }';
+  // #app は position: fixed で窓に直に合わせるので、外枠の余白には頼らない (安全域は自分の env() で取る)。
+  const override = '';
   html = `${title}\n<style>\n${css}\n${override}\n</style>\n${body}`;
 }
 

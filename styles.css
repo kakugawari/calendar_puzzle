@@ -41,7 +41,7 @@ body {
 }
 
 #app {
-  position: absolute;
+  position: fixed;          /* 親の高さの計算に頼らず、見えている窓に直に合わせる (高さは app.js が窓の高さで上書きする) */
   inset: 0;
   display: flex;
   flex-direction: column;
@@ -67,8 +67,8 @@ body {
   color: var(--text);
 }
 
+.diag { margin-left: auto; font-size: 9px; color: var(--muted); opacity: .6; font-variant-numeric: tabular-nums; }
 .solved {
-  margin-left: auto;
   font-size: 13px;
   font-weight: 700;
   color: var(--muted);
