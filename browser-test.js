@@ -104,6 +104,11 @@ const nowSig = (page, id) => page.evaluate((a) => {
 
 /** ピースを、解のとおりの形になるまで 回す・裏返す (ボタンで。タップで回ることは別に確かめる) */
 async function orientTo(page, id, wantO) {
+  const done = await orientToNow(page, id, wantO);
+  await page.waitForTimeout(220);      // 回す・裏返す動き (150ms) が終わるのを待つ。途中だと、見た目の形が当たり判定とずれる
+  return done;
+}
+async function orientToNow(page, id, wantO) {
   const want = await shapeSig(page, id, wantO);
   if ((await nowSig(page, id)) === want) return true;
   await page.evaluate((a) => window.__app.select(a), id);
@@ -514,6 +519,28 @@ async function run() {
       });
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
       ok(ms < 2, `CPU 4 倍遅で、1 回の動きに ${ms.toFixed(2)}ms (2ms 未満)`);
+      await context.close();
+    }
+
+    // ------------------------------------------------ アイコン
+    section('ホーム画面のアイコン');
+    {
+      const { context, page } = await open(browser);
+      const links = await page.evaluate(() => ({
+        apple: document.querySelector('link[rel="apple-touch-icon"]')?.getAttribute('href'),
+        manifest: document.querySelector('link[rel="manifest"]')?.getAttribute('href')
+      }));
+      ok(!!links.apple && links.apple.endsWith('.png'), `apple-touch-icon が PNG (${links.apple}。iOS は SVG を使えない)`);
+      const res = await page.request.get(URL + links.apple.replace('./', ''));
+      ok(res.ok() && (res.headers()['content-type'] || '').includes('image/png'), 'アイコンが PNG として配信される');
+      const dims = await page.evaluate(async (src) => {
+        const img = new Image(); img.src = src; await img.decode(); return [img.naturalWidth, img.naturalHeight];
+      }, links.apple);
+      ok(dims[0] === 180 && dims[1] === 180, `180x180 (${dims.join('x')})`);
+      const man = await (await page.request.get(URL + links.manifest.replace('./', ''))).json();
+      let allOk = man.icons.length > 0;
+      for (const ic of man.icons) allOk = allOk && (await page.request.get(URL + ic.src.replace('./', ''))).ok();
+      ok(allOk, `マニフェストのアイコン ${man.icons.map((i) => i.sizes).join(', ')} が配信される`);
       await context.close();
     }
 
